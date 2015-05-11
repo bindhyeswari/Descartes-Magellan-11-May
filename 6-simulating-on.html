@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script>
+
+        document.addEventListener('DOMContentLoaded', function (events) {
+            HTMLElement.prototype.on = function (events) {
+                var selector, data, handler;
+                var elem = this;
+
+                switch (arguments.length) {
+
+                    // just implement case 2 and make sure it is working
+                    case 2: handler = arguments[1];
+                        addListener(elem, events, handler);
+                        break;
+
+                    case 3: if (typeof arguments[1] === 'string') {
+                            selector = arguments[1];
+                            handler = arguments[2];
+                            addListener(elem, events, function (event) {
+                                // check if the event.target is a child of the
+                                // element, which matches the css selector(s?)
+
+                                var matched_children = Array.prototype.slice.call(elem.querySelectorAll(selector));
+
+                                if (matched_children.indexOf(event.target) !== -1) {
+                                    handler.call(elem, event);
+                                }
+
+                            });
+                        } else {
+                            data = arguments[1];
+                            handler = arguments[2];
+                            addListener(elem, events, function (event) {
+                                // attach data to the event object and invoke the handler
+                                event.data = data;
+                                handler.call(elem, event);
+                            });
+                        }
+                        break;
+
+                    case 4: selector = arguments[1];
+                        data = arguments[2];
+                        handler = arguments[3];
+                        addListener(elem, events, function (event) {
+                            // check if the event.target is a child of the
+                            // element, which matches the css selector(s?)
+
+                            event.data = data;
+
+                            var matched_children = Array.prototype.slice.call(elem.querySelectorAll(selector));
+
+                            if (matched_children.indexOf(event.target) !== -1) {
+                                handler.call(elem, event);
+                            }
+
+                        });
+
+                }
+
+
+                function addListener(element, events, _handler) {
+                    events.split(' ').forEach(function (event) {
+                        element.addEventListener(event, _handler);
+                    });
+                }
+            };
+
+
+            document.body.firstElementChild.on('click', 'span', {name: 'Lakshmi'}, function (event) {
+                console.log(event.clientX);
+            });
+        });
+
+    </script>
+</head>
+<body>
+<div>
+    <div>This a div</div>
+    <span>This is a span</span>
+    <a href="#">This is a hyperlink</a>
+</div>
+</body>
+</html>
