@@ -6,11 +6,17 @@
     <script>
 
         document.addEventListener('DOMContentLoaded', function () {
-            HTMLButtonElement.prototype.on = function () {
+            HTMLElement.prototype.on = function (eventString, selector, data, handler) {
+
+                // if selector is defined, apply the event handlers on the children of the element
+                // children - match the selectors
+
+                // else apply it on the parent
 
             };
+
             var btn = document.body.firstElementChild;
-            btn.addEventListener('click', test.bind(null, 'Raymond')); // test.bind --> fn(event) {  //name }
+            /*btn.addEventListener('click', test.bind(btn, 'Raymond')); // test.bind --> fn(event) {  //name }
 
             function test(name, event) {
                 console.log(name);
@@ -21,7 +27,9 @@
             btn.addEventListener('click', function (event) {
                 console.log('basic addEventListener');
                 console.log(this === event.currentTarget);
-            });
+            });*/
+
+            btn.on('click contextmenu', '');
         });
 
     </script>
